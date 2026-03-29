@@ -2,11 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>KittyBin — secure file storage & sharing</title>
-<!-- Supabase JS v2 -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- Fonts -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KittyBin — File Storage & Sharing</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   * {
@@ -40,7 +37,6 @@
     overflow-x: hidden;
   }
 
-  /* subtle noise texture */
   body::after {
     content: '';
     position: fixed;
@@ -51,18 +47,10 @@
     z-index: 9999;
   }
 
-  ::-webkit-scrollbar {
-    width: 5px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--bg);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 99px;
-  }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-  /* navigation */
   nav {
     position: fixed;
     top: 0;
@@ -78,6 +66,7 @@
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
   }
+  
   .logo {
     font-weight: 800;
     font-size: 1.35rem;
@@ -98,7 +87,6 @@
     color: var(--accent3);
   }
 
-  /* buttons */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -114,6 +102,7 @@
     background: transparent;
     color: var(--text);
   }
+  
   .btn-primary {
     background: var(--accent);
     color: white;
@@ -142,17 +131,12 @@
     color: white;
     border-color: var(--danger);
   }
-  .btn-sm {
-    padding: 5px 12px;
-    font-size: 0.75rem;
-  }
+  .btn-sm { padding: 5px 12px; font-size: 0.75rem; }
   .w-full { width: 100%; }
 
-  /* pages */
   .page { display: none; min-height: 100vh; padding-top: 62px; }
   .page.active { display: block; }
 
-  /* landing */
   #page-landing.active {
     display: flex;
     flex-direction: column;
@@ -162,6 +146,7 @@
     padding: 80px 2rem 4rem;
     position: relative;
   }
+  
   .hero-blob {
     position: absolute;
     top: -60px;
@@ -172,6 +157,7 @@
     background: radial-gradient(circle, rgba(124, 109, 240, 0.12) 0%, transparent 70%);
     pointer-events: none;
   }
+  
   .hero-chip {
     font-family: var(--mono);
     font-size: 0.7rem;
@@ -182,6 +168,7 @@
     border-radius: 60px;
     margin-bottom: 1.5rem;
   }
+  
   h1 {
     font-size: clamp(2.8rem, 7vw, 5rem);
     font-weight: 800;
@@ -190,6 +177,7 @@
     margin-bottom: 1.2rem;
   }
   h1 .hl { color: var(--accent); }
+  
   .hero-desc {
     font-family: var(--mono);
     color: var(--muted);
@@ -199,12 +187,12 @@
     margin-bottom: 2rem;
   }
 
-  /* auth card */
   #page-auth.active {
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  
   .auth-box {
     background: var(--card);
     border: 1px solid var(--border);
@@ -214,6 +202,7 @@
     max-width: 440px;
     margin: 2rem;
   }
+  
   .tabs {
     display: flex;
     border: 1px solid var(--border);
@@ -221,6 +210,7 @@
     overflow: hidden;
     margin: 1.5rem 0 1.8rem;
   }
+  
   .tab {
     flex: 1;
     padding: 8px;
@@ -235,6 +225,7 @@
     background: var(--accent);
     color: white;
   }
+  
   .fg { margin-bottom: 1.2rem; }
   label {
     font-family: var(--mono);
@@ -243,6 +234,7 @@
     display: block;
     margin-bottom: 5px;
   }
+  
   input, select {
     width: 100%;
     background: var(--surface);
@@ -262,12 +254,12 @@
     margin-top: 5px;
   }
 
-  /* dashboard layout */
   #page-dash.active {
     display: grid;
     grid-template-columns: 240px 1fr;
     min-height: calc(100vh - 62px);
   }
+  
   .sidebar {
     background: var(--surface);
     border-right: 1px solid var(--border);
@@ -277,6 +269,7 @@
     height: calc(100vh - 62px);
     overflow-y: auto;
   }
+  
   .sb-label {
     font-family: var(--mono);
     font-size: 0.65rem;
@@ -285,6 +278,7 @@
     margin: 1.8rem 0 0.6rem 0.6rem;
   }
   .sb-label:first-child { margin-top: 0; }
+  
   .sb-item {
     display: flex;
     align-items: center;
@@ -312,24 +306,26 @@
     border-radius: 40px;
     font-size: 0.7rem;
   }
+  
   .main {
     padding: 2rem;
     overflow-y: auto;
   }
 
-  /* stats */
   .stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 1rem;
     margin: 1.5rem 0 2rem;
   }
+  
   .stat {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 1.2rem;
   }
+  
   .stat-lbl {
     font-family: var(--mono);
     font-size: 0.7rem;
@@ -344,12 +340,12 @@
   .v-green { color: var(--accent3); }
   .v-orange { color: #f0a06d; }
 
-  /* file rows */
   .file-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
+  
   .file-row {
     display: flex;
     align-items: center;
@@ -360,6 +356,7 @@
     border-radius: 14px;
     transition: 0.1s;
   }
+  
   .ficon {
     width: 40px;
     height: 40px;
@@ -373,10 +370,8 @@
   .fi-doc { background: rgba(124, 109, 240, 0.12); }
   .fi-code { background: rgba(109, 240, 200, 0.12); }
   .fi-other { background: rgba(90, 90, 114, 0.15); }
-  .fname {
-    flex: 1;
-    min-width: 0;
-  }
+  
+  .fname { flex: 1; min-width: 0; }
   .fname-text {
     font-weight: 600;
     white-space: nowrap;
@@ -388,6 +383,7 @@
     font-size: 0.7rem;
     color: var(--muted);
   }
+  
   .badge-pub {
     font-size: 0.65rem;
     padding: 2px 10px;
@@ -404,12 +400,9 @@
     border: 1px solid var(--border);
     color: var(--muted);
   }
-  .file-actions {
-    display: flex;
-    gap: 6px;
-  }
+  
+  .file-actions { display: flex; gap: 6px; }
 
-  /* dropzone */
   .drop-zone {
     border: 2px dashed var(--border);
     border-radius: 18px;
@@ -423,6 +416,7 @@
     border-color: var(--accent);
     background: rgba(124, 109, 240, 0.04);
   }
+  
   .preview-list {
     display: flex;
     flex-direction: column;
@@ -438,7 +432,6 @@
     gap: 8px;
   }
 
-  /* modals */
   .overlay {
     position: fixed;
     inset: 0;
@@ -451,6 +444,7 @@
     padding: 1rem;
   }
   .overlay.open { display: flex; }
+  
   .modal {
     background: var(--card);
     border: 1px solid var(--border);
@@ -461,13 +455,20 @@
     overflow-y: auto;
     padding: 1.6rem;
   }
+  
   .modal-hdr {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1.2rem;
   }
+  .modal-x {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
 
-  /* progress */
   .prog-wrap { margin: 1rem 0; }
   .prog-bar-bg {
     background: var(--border);
@@ -482,7 +483,6 @@
     transition: width 0.2s;
   }
 
-  /* toasts */
   .toasts {
     position: fixed;
     bottom: 1.5rem;
@@ -492,6 +492,7 @@
     flex-direction: column;
     gap: 8px;
   }
+  
   .toast {
     background: var(--card);
     border-left: 3px solid var(--accent);
@@ -502,6 +503,7 @@
     backdrop-filter: blur(4px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
+  
   .spin {
     width: 28px;
     height: 28px;
@@ -510,11 +512,21 @@
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
   }
+  
   @keyframes spin { to { transform: rotate(360deg); } }
+  
   .flex { display: flex; }
   .gap2 { gap: 8px; }
   .mono { font-family: var(--mono); }
   .muted { color: var(--muted); }
+  .sm { font-size: 0.8rem; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+  }
+  
   @media (max-width: 700px) {
     #page-dash.active { grid-template-columns: 1fr; }
     .sidebar { display: none; }
@@ -535,11 +547,11 @@
 <!-- LANDING -->
 <div id="page-landing" class="page active">
   <div class="hero-blob"></div>
-  <div class="hero-chip">✦ encrypt-free • fast storage</div>
-  <h1>Store & share<br><span class="hl">without limits</span></h1>
-  <p class="hero-desc">Drag & drop any file, toggle public/private, generate instant links. Yours forever.</p>
+  <div class="hero-chip">✦ local storage • fully working</div>
+  <h1>Store & share<br><span class="hl">your files</span></h1>
+  <p class="hero-desc">Upload anything. Keep it private or share a link. Simple, fast, yours — works immediately.</p>
   <div class="flex gap2">
-    <button class="btn btn-primary" onclick="showAuth('signup')">Get started →</button>
+    <button class="btn btn-primary" onclick="showAuth('signup')">Create account →</button>
     <button class="btn btn-ghost" onclick="showAuth('login')">Sign in</button>
   </div>
 </div>
@@ -548,23 +560,22 @@
 <div id="page-auth" class="page">
   <div class="auth-box">
     <h2 id="authH">Welcome back</h2>
-    <p class="muted mono sm" id="authSub">Sign in to continue</p>
+    <p class="muted mono sm" id="authSub">Sign in to access your files</p>
     <div class="tabs">
       <button class="tab active" id="tabLoginBtn" onclick="switchAuthTab('login')">Log in</button>
       <button class="tab" id="tabSignupBtn" onclick="switchAuthTab('signup')">Sign up</button>
     </div>
     <div id="loginPanel">
-      <div class="fg"><label>Email</label><input type="email" id="loginEmail" placeholder="moon@kittybin.xyz"></div>
-      <div class="fg"><label>Password</label><input type="password" id="loginPw" placeholder="••••••"></div>
+      <div class="fg"><label>Username</label><input type="text" id="loginUsername" placeholder="coolcat99"></div>
+      <div class="fg"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••"></div>
       <button class="btn btn-primary w-full" onclick="handleLogin()">Log in</button>
     </div>
     <div id="signupPanel" style="display:none">
-      <div class="fg"><label>Username (unique)</label><input type="text" id="signupUser" placeholder="nebula" autocomplete="off"><div class="hint">kittybin.lat/users/<span id="userPreview">nebula</span></div></div>
-      <div class="fg"><label>Email</label><input type="email" id="signupEmail" placeholder="hello@kitty.space"></div>
-      <div class="fg"><label>Password</label><input type="password" id="signupPw" placeholder="at least 6 characters"></div>
+      <div class="fg"><label>Username</label><input type="text" id="signupUsername" placeholder="coolcat99" autocomplete="off"></div>
+      <div class="fg"><label>Password</label><input type="password" id="signupPassword" placeholder="min. 4 characters"></div>
       <button class="btn btn-primary w-full" onclick="handleSignup()">Create account</button>
     </div>
-    <div class="muted mono sm" style="text-align:center; margin-top:1.2rem">⚡ instant setup</div>
+    <div class="muted mono sm" style="text-align:center; margin-top:1.2rem">⚡ works offline • local storage</div>
   </div>
 </div>
 
@@ -589,7 +600,7 @@
         <div class="stat"><div class="stat-lbl">Public</div><div class="stat-val v-green" id="statPublic">0</div></div>
         <div class="stat"><div class="stat-lbl">Private</div><div class="stat-val v-orange" id="statPrivate">0</div></div>
       </div>
-      <div class="card" style="background:var(--card); border-radius: var(--radius); padding:0 0 1rem 0"><div style="padding: 1rem 1rem 0 1rem; font-weight:700">Recent uploads</div><div id="recentFilesList"><div class="spin-wrap" style="display:flex; justify-content:center; padding:2rem"><div class="spin"></div></div></div></div>
+      <div class="card"><div style="font-weight:700; margin-bottom:1rem">Recent Uploads</div><div id="recentFilesList"><div class="spin-wrap" style="display:flex; justify-content:center; padding:2rem"><div class="spin"></div></div></div></div>
     </div>
     <div id="section-files" style="display:none">
       <div style="display:flex; justify-content: space-between; margin-bottom:1.2rem"><h3 style="font-size:1.3rem">All files</h3><button class="btn btn-primary btn-sm" onclick="openUploadModal()">Upload</button></div>
@@ -601,12 +612,15 @@
 <!-- UPLOAD MODAL -->
 <div class="overlay" id="uploadOverlay">
   <div class="modal">
-    <div class="modal-hdr"><span class="modal-title" style="font-weight:700">Upload files</span><button class="modal-x" onclick="closeModal('uploadOverlay')" style="background:none; border:none; color:var(--muted); font-size:1.2rem; cursor:pointer">✕</button></div>
-    <div class="drop-zone" id="dropZoneEl" onclick="document.getElementById('fileInputElem').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)"><div style="font-size:2rem">📂</div><div class="mono muted"><strong>Click or drag</strong> files (max 50MB each)</div></div>
+    <div class="modal-hdr"><span class="modal-title" style="font-weight:700">Upload files</span><button class="modal-x" onclick="closeModal('uploadOverlay')">✕</button></div>
+    <div class="drop-zone" id="dropZoneEl" onclick="document.getElementById('fileInputElem').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+      <div style="font-size:2rem">📂</div>
+      <div class="mono muted"><strong>Click or drag</strong> files (max 50MB each)</div>
+    </div>
     <input type="file" id="fileInputElem" multiple style="display:none" onchange="handleFileSelect(event)">
     <div id="uploadPreviewList" class="preview-list"></div>
     <div class="fg"><label>Visibility</label><select id="uploadVisibility"><option value="public">🌍 Public – anyone with link</option><option value="private">🔒 Private – only you</option></select></div>
-    <div class="fg"><label>Description (optional)</label><input type="text" id="uploadDesc" placeholder="e.g. project screenshot"></div>
+    <div class="fg"><label>Description (optional)</label><input type="text" id="uploadDesc" placeholder="e.g., project screenshot"></div>
     <div id="uploadProgressArea" style="display:none"><div class="prog-bar-bg"><div id="uploadProgressFill" class="prog-bar"></div></div><div class="mono muted sm" id="uploadProgressText">preparing...</div></div>
     <button class="btn btn-primary w-full" id="uploadActionBtn" onclick="performUpload()">Upload</button>
   </div>
@@ -614,23 +628,35 @@
 
 <!-- PREVIEW MODAL -->
 <div class="overlay" id="previewOverlay">
-  <div class="modal" style="max-width:620px"><div class="modal-hdr"><span id="previewTitle" class="modal-title">File</span><button class="modal-x" onclick="closeModal('previewOverlay')">✕</button></div><div id="previewBody"></div></div>
+  <div class="modal" style="max-width:620px">
+    <div class="modal-hdr"><span id="previewTitle" class="modal-title">File</span><button class="modal-x" onclick="closeModal('previewOverlay')">✕</button></div>
+    <div id="previewBody"></div>
+  </div>
 </div>
 
 <div class="toasts" id="toastContainer"></div>
 
 <script>
-  // ------------------- SUPABASE CONFIG -------------------
-  const SUPABASE_URL = 'https://rihlrldsemwrzlakwvnc.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_nZQ0FEe4EGkbr_r6FsD1ag_il4QRxaX';
-  const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // ==================== LOCAL STORAGE BACKEND ====================
+  // This works immediately without any external setup!
+  
+  // Initialize storage
+  if (!localStorage.getItem('kittybin_users')) {
+    localStorage.setItem('kittybin_users', JSON.stringify([]));
+  }
+  if (!localStorage.getItem('kittybin_files')) {
+    localStorage.setItem('kittybin_files', JSON.stringify([]));
+  }
+  if (!localStorage.getItem('kittybin_sessions')) {
+    localStorage.setItem('kittybin_sessions', JSON.stringify({}));
+  }
 
   let currentUser = null;
-  let currentProfile = null;
   let selectedFiles = [];
 
-  // helper dom
+  // Helper functions
   const $ = id => document.getElementById(id);
+  
   const toast = (msg, type = 'ok') => {
     const t = document.createElement('div');
     t.className = 'toast';
@@ -638,157 +664,431 @@
     $('toastContainer').appendChild(t);
     setTimeout(() => t.remove(), 3200);
   };
-  const escapeHtml = s => String(s || '').replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;});
-
-  // auth & routing
-  async function loadUserProfile() {
+  
+  const escapeHtml = s => String(s || '').replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+  
+  const formatBytes = (bytes) => {
+    if (!bytes) return '';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  };
+  
+  const getFileIconType = (name) => {
+    const ext = (name.split('.').pop() || '').toLowerCase();
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext)) return { icon: '🖼️', cls: 'img' };
+    if (['mp4', 'mov', 'webm'].includes(ext)) return { icon: '🎬', cls: 'img' };
+    if (['pdf', 'doc', 'docx', 'txt', 'md'].includes(ext)) return { icon: '📄', cls: 'doc' };
+    if (['js', 'ts', 'py', 'html', 'css', 'json'].includes(ext)) return { icon: '⚡', cls: 'code' };
+    return { icon: '📎', cls: 'other' };
+  };
+  
+  // Auth functions
+  const handleSignup = () => {
+    const username = $('signupUsername').value.trim();
+    const password = $('signupPassword').value;
+    
+    if (!username || !password) {
+      toast('Please fill in all fields', 'err');
+      return;
+    }
+    if (username.length < 3) {
+      toast('Username must be at least 3 characters', 'err');
+      return;
+    }
+    if (password.length < 4) {
+      toast('Password must be at least 4 characters', 'err');
+      return;
+    }
+    
+    const users = JSON.parse(localStorage.getItem('kittybin_users'));
+    if (users.find(u => u.username === username)) {
+      toast('Username already exists', 'err');
+      return;
+    }
+    
+    const newUser = {
+      id: Date.now().toString(),
+      username: username,
+      password: password,
+      createdAt: new Date().toISOString()
+    };
+    
+    users.push(newUser);
+    localStorage.setItem('kittybin_users', JSON.stringify(users));
+    toast('Account created! Please log in', 'ok');
+    switchAuthTab('login');
+    $('signupUsername').value = '';
+    $('signupPassword').value = '';
+  };
+  
+  const handleLogin = () => {
+    const username = $('loginUsername').value.trim();
+    const password = $('loginPassword').value;
+    
+    if (!username || !password) {
+      toast('Please fill in all fields', 'err');
+      return;
+    }
+    
+    const users = JSON.parse(localStorage.getItem('kittybin_users'));
+    const user = users.find(u => u.username === username && u.password === password);
+    
+    if (!user) {
+      toast('Invalid username or password', 'err');
+      return;
+    }
+    
+    currentUser = user;
+    const sessions = JSON.parse(localStorage.getItem('kittybin_sessions'));
+    sessions[user.id] = { userId: user.id, timestamp: Date.now() };
+    localStorage.setItem('kittybin_sessions', JSON.stringify(sessions));
+    
+    toast(`Welcome back, ${user.username}!`, 'ok');
+    renderNavBar();
+    showPage('dash');
+    refreshDashboard();
+    $('loginUsername').value = '';
+    $('loginPassword').value = '';
+  };
+  
+  const logoutUser = () => {
+    if (currentUser) {
+      const sessions = JSON.parse(localStorage.getItem('kittybin_sessions'));
+      delete sessions[currentUser.id];
+      localStorage.setItem('kittybin_sessions', JSON.stringify(sessions));
+    }
+    currentUser = null;
+    renderNavBar();
+    showPage('landing');
+    toast('Logged out successfully', 'ok');
+  };
+  
+  // File functions
+  const refreshDashboard = () => {
     if (!currentUser) return;
-    const { data } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
-    currentProfile = data;
-  }
-  async function refreshDashboard() {
-    if (!currentUser) return;
-    const { data: files } = await supabase.from('files').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
-    const all = files || [];
-    $('statTotal').innerText = all.length;
-    $('statPublic').innerText = all.filter(f => f.visibility === 'public').length;
-    $('statPrivate').innerText = all.filter(f => f.visibility === 'private').length;
-    $('fileCountBadge').innerText = all.length;
-    if (currentProfile) $('dashboardGreet').innerText = `@${currentProfile.username}`;
-    renderFileList(all.slice(0, 5), 'recentFilesList');
-    renderFileList(all, 'allFilesList');
-  }
-  function renderFileList(files, containerId) {
+    
+    const files = JSON.parse(localStorage.getItem('kittybin_files'));
+    const userFiles = files.filter(f => f.userId === currentUser.id).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    
+    $('statTotal').innerText = userFiles.length;
+    $('statPublic').innerText = userFiles.filter(f => f.visibility === 'public').length;
+    $('statPrivate').innerText = userFiles.filter(f => f.visibility === 'private').length;
+    $('fileCountBadge').innerText = userFiles.length;
+    $('dashboardGreet').innerText = `@${currentUser.username}`;
+    
+    renderFileList(userFiles.slice(0, 5), 'recentFilesList');
+    renderFileList(userFiles, 'allFilesList');
+  };
+  
+  const renderFileList = (files, containerId) => {
     const container = $(containerId);
-    if (!files.length) { container.innerHTML = '<div class="empty" style="text-align:center;padding:2rem;color:var(--muted)"><div>📭</div><div class="mono">No files yet</div></div>'; return; }
+    if (!files.length) {
+      container.innerHTML = '<div class="empty" style="text-align:center;padding:2rem;color:var(--muted)"><div>📭</div><div class="mono">No files yet</div></div>';
+      return;
+    }
     container.innerHTML = '<div class="file-list">' + files.map(f => fileRowHtml(f)).join('') + '</div>';
-  }
-  function fileRowHtml(f) {
+  };
+  
+  const fileRowHtml = (f) => {
     const iconType = getFileIconType(f.name);
     const badge = f.visibility === 'public' ? '<span class="badge-pub">public</span>' : '<span class="badge-prv">private</span>';
-    const sizeStr = f.file_size ? formatBytes(f.file_size) : '';
-    const dateStr = new Date(f.created_at).toLocaleDateString();
+    const dateStr = new Date(f.createdAt).toLocaleDateString();
     return `<div class="file-row">
       <div class="ficon fi-${iconType.cls}">${iconType.icon}</div>
-      <div class="fname"><div class="fname-text" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</div><div class="fname-meta">${sizeStr} · ${dateStr}${f.description ? ' · ' + escapeHtml(f.description) : ''}</div></div>
+      <div class="fname">
+        <div class="fname-text" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</div>
+        <div class="fname-meta">${formatBytes(f.size)} · ${dateStr}${f.description ? ' · ' + escapeHtml(f.description) : ''}</div>
+      </div>
       ${badge}
-      <div class="file-actions"><button class="btn btn-ghost btn-sm" onclick="viewFileDetails('${f.id}')">👁</button>${f.visibility === 'public' ? `<button class="btn btn-ghost btn-sm" onclick="copyFileLink('${f.id}')">🔗</button>` : ''}<button class="btn btn-danger btn-sm" onclick="deleteFileById('${f.id}')">✕</button></div>
+      <div class="file-actions">
+        <button class="btn btn-ghost btn-sm" onclick="viewFileDetails('${f.id}')">👁</button>
+        ${f.visibility === 'public' ? `<button class="btn btn-ghost btn-sm" onclick="copyFileLink('${f.id}')">🔗</button>` : ''}
+        <button class="btn btn-danger btn-sm" onclick="deleteFileById('${f.id}')">✕</button>
+      </div>
     </div>`;
-  }
-  function getFileIconType(name) {
-    const ext = (name.split('.').pop() || '').toLowerCase();
-    if (['png','jpg','jpeg','gif','webp','svg'].includes(ext)) return { icon: '🖼️', cls: 'img' };
-    if (['mp4','mov','webm'].includes(ext)) return { icon: '🎬', cls: 'img' };
-    if (['pdf','doc','docx','txt','md'].includes(ext)) return { icon: '📄', cls: 'doc' };
-    if (['js','ts','py','html','css','json'].includes(ext)) return { icon: '⚡', cls: 'code' };
-    return { icon: '📎', cls: 'other' };
-  }
-  function formatBytes(b) { if(!b) return ''; if(b<1024) return b+' B'; if(b<1048576) return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
-
-  // file actions
-  async function viewFileDetails(id) {
-    const { data: file } = await supabase.from('files').select('*').eq('id', id).single();
-    if (!file) return toast('File missing','err');
+  };
+  
+  const viewFileDetails = (fileId) => {
+    const files = JSON.parse(localStorage.getItem('kittybin_files'));
+    const file = files.find(f => f.id === fileId);
+    if (!file) return toast('File not found', 'err');
+    
     const shareUrl = `${window.location.origin}${window.location.pathname}#/f/${file.id}`;
-    const isImage = file.file_type && file.file_type.startsWith('image/');
+    const isImage = file.type && file.type.startsWith('image/');
+    const fileData = file.fileData;
+    
     $('previewTitle').innerText = file.name;
+    
+    let previewContent = '';
+    if (isImage && fileData) {
+      previewContent = `<img src="${fileData}" style="max-width:100%; border-radius:12px; margin-bottom:1rem; max-height:320px; object-fit:contain" alt="preview">`;
+    }
+    
     $('previewBody').innerHTML = `
-      <div class="flex gap2 mono muted sm" style="margin-bottom:1rem">${file.file_type || 'file'} · ${formatBytes(file.file_size)} ${file.visibility === 'public' ? '<span class="badge-pub">public</span>' : '<span class="badge-prv">private</span>'}</div>
+      <div class="flex gap2 mono muted sm" style="margin-bottom:1rem">${file.type || 'file'} · ${formatBytes(file.size)} ${file.visibility === 'public' ? '<span class="badge-pub">public</span>' : '<span class="badge-prv">private</span>'}</div>
       ${file.description ? `<div class="muted mono sm" style="margin-bottom:1rem">📝 ${escapeHtml(file.description)}</div>` : ''}
-      ${isImage ? `<img src="${file.file_url}" style="max-width:100%; border-radius:12px; margin-bottom:1rem; max-height:320px; object-fit:contain" alt="preview">` : ''}
-      <div class="flex gap2"><a href="${file.file_url}" target="_blank" download="${escapeHtml(file.name)}" class="btn btn-primary btn-sm">⬇ Download</a>${file.visibility === 'public' ? `<button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${shareUrl}')">🔗 Copy link</button>` : ''}</div>
-      ${file.visibility === 'public' ? `<div class="share-box" style="margin-top:1rem; background:var(--surface); border-radius:10px; padding:8px; font-size:0.7rem">${shareUrl} <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${shareUrl}')">copy</button></div>` : ''}
+      ${previewContent}
+      <div class="flex gap2">
+        <a href="${fileData}" download="${escapeHtml(file.name)}" class="btn btn-primary btn-sm">⬇ Download</a>
+        ${file.visibility === 'public' ? `<button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${shareUrl}')">🔗 Copy link</button>` : ''}
+      </div>
+      ${file.visibility === 'public' ? `<div class="share-box" style="margin-top:1rem; background:var(--surface); border-radius:10px; padding:8px; font-size:0.7rem; word-break:break-all">${shareUrl} <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${shareUrl}')">copy</button></div>` : ''}
     `;
     openModal('previewOverlay');
-  }
-  async function deleteFileById(id) {
-    if (!confirm('Delete file permanently?')) return;
-    const { data: f } = await supabase.from('files').select('file_url').eq('id', id).single();
-    if (f && f.file_url) {
-      const pathMatch = f.file_url.match(/\/storage\/v1\/object\/public\/files\/(.+)$/);
-      if (pathMatch) await supabase.storage.from('files').remove([decodeURIComponent(pathMatch[1])]);
-    }
-    await supabase.from('files').delete().eq('id', id);
+  };
+  
+  const deleteFileById = (fileId) => {
+    if (!confirm('Delete this file permanently?')) return;
+    
+    const files = JSON.parse(localStorage.getItem('kittybin_files'));
+    const filtered = files.filter(f => f.id !== fileId);
+    localStorage.setItem('kittybin_files', JSON.stringify(filtered));
+    
     toast('File deleted', 'ok');
     refreshDashboard();
-  }
-  function copyFileLink(id) { copyToClipboard(`${window.location.origin}${window.location.pathname}#/f/${id}`); }
-  function copyToClipboard(text) { navigator.clipboard.writeText(text); toast('Link copied!', 'ok'); }
-
-  // upload flow
-  function openUploadModal() { selectedFiles = []; $('uploadPreviewList').innerHTML = ''; $('uploadDesc').value = ''; $('uploadVisibility').value = 'public'; $('uploadProgressArea').style.display = 'none'; openModal('uploadOverlay'); }
-  function handleFileSelect(e) { handlePickedFiles(e.target.files); }
-  function handleDrop(e) { e.preventDefault(); handleDragLeave(e); handlePickedFiles(e.dataTransfer.files); }
-  function handleDragOver(e) { e.preventDefault(); $('dropZoneEl').classList.add('over'); }
-  function handleDragLeave(e) { $('dropZoneEl').classList.remove('over'); }
-  function handlePickedFiles(files) { selectedFiles = Array.from(files); const previewDiv = $('uploadPreviewList'); previewDiv.innerHTML = selectedFiles.map(f => `<div class="preview-item"><span>${getFileIconType(f.name).icon}</span><span style="flex:1">${escapeHtml(f.name)}</span><span class="muted mono sm">${formatBytes(f.size)}</span></div>`).join(''); }
-  async function performUpload() {
-    if (!selectedFiles.length) return toast('No files selected', 'err');
-    const vis = $('uploadVisibility').value;
-    const desc = $('uploadDesc').value.trim();
+  };
+  
+  const copyFileLink = (fileId) => {
+    const url = `${window.location.origin}${window.location.pathname}#/f/${fileId}`;
+    copyToClipboard(url);
+  };
+  
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    toast('Link copied!', 'ok');
+  };
+  
+  // Upload functions
+  const openUploadModal = () => {
+    selectedFiles = [];
+    $('uploadPreviewList').innerHTML = '';
+    $('uploadDesc').value = '';
+    $('uploadVisibility').value = 'public';
+    $('uploadProgressArea').style.display = 'none';
+    openModal('uploadOverlay');
+  };
+  
+  const handleFileSelect = (e) => {
+    handlePickedFiles(e.target.files);
+  };
+  
+  const handleDrop = (e) => {
+    e.preventDefault();
+    handleDragLeave(e);
+    handlePickedFiles(e.dataTransfer.files);
+  };
+  
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    $('dropZoneEl').classList.add('over');
+  };
+  
+  const handleDragLeave = (e) => {
+    $('dropZoneEl').classList.remove('over');
+  };
+  
+  const handlePickedFiles = (files) => {
+    selectedFiles = Array.from(files);
+    const previewDiv = $('uploadPreviewList');
+    previewDiv.innerHTML = selectedFiles.map(f => `
+      <div class="preview-item">
+        <span>${getFileIconType(f.name).icon}</span>
+        <span style="flex:1">${escapeHtml(f.name)}</span>
+        <span class="muted mono sm">${formatBytes(f.size)}</span>
+      </div>
+    `).join('');
+  };
+  
+  const performUpload = async () => {
+    if (!selectedFiles.length) {
+      toast('No files selected', 'err');
+      return;
+    }
+    
+    const visibility = $('uploadVisibility').value;
+    const description = $('uploadDesc').value.trim();
     const btn = $('uploadActionBtn');
-    btn.disabled = true; btn.textContent = 'Uploading...';
+    
+    btn.disabled = true;
+    btn.textContent = 'Uploading...';
     $('uploadProgressArea').style.display = 'block';
+    
     let completed = 0;
-    for (let file of selectedFiles) {
-      if (file.size > 50 * 1024 * 1024) { toast(`${file.name} exceeds 50MB`, 'err'); completed++; continue; }
-      const path = `${currentUser.id}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9_.-]/g, '_')}`;
-      const { error: uploadErr } = await supabase.storage.from('files').upload(path, file);
-      if (uploadErr) { toast(`Failed ${file.name}: ${uploadErr.message}`, 'err'); completed++; continue; }
-      const { data: { publicUrl } } = supabase.storage.from('files').getPublicUrl(path);
-      await supabase.from('files').insert({ user_id: currentUser.id, name: file.name, description: desc || null, file_url: publicUrl, file_type: file.type, file_size: file.size, visibility: vis });
+    const files = JSON.parse(localStorage.getItem('kittybin_files'));
+    
+    for (const file of selectedFiles) {
+      if (file.size > 50 * 1024 * 1024) {
+        toast(`${file.name} exceeds 50MB`, 'err');
+        completed++;
+        continue;
+      }
+      
+      const reader = new FileReader();
+      const fileData = await new Promise((resolve) => {
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsDataURL(file);
+      });
+      
+      const newFile = {
+        id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        userId: currentUser.id,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        description: description || null,
+        visibility: visibility,
+        fileData: fileData,
+        createdAt: new Date().toISOString()
+      };
+      
+      files.push(newFile);
       completed++;
+      
       const percent = (completed / selectedFiles.length) * 100;
       $('uploadProgressFill').style.width = `${percent}%`;
       $('uploadProgressText').innerText = `${completed}/${selectedFiles.length} uploaded`;
     }
-    toast(`${completed} file(s) uploaded`, 'ok');
-    btn.disabled = false; btn.textContent = 'Upload';
+    
+    localStorage.setItem('kittybin_files', JSON.stringify(files));
+    
+    toast(`${completed} file(s) uploaded!`, 'ok');
+    btn.disabled = false;
+    btn.textContent = 'Upload';
     $('uploadProgressArea').style.display = 'none';
-    selectedFiles = []; $('uploadPreviewList').innerHTML = ''; $('fileInputElem').value = '';
+    selectedFiles = [];
+    $('uploadPreviewList').innerHTML = '';
+    $('fileInputElem').value = '';
     closeModal('uploadOverlay');
     refreshDashboard();
-  }
-
-  // auth handlers
-  async function handleLogin() { const email = $('loginEmail').value.trim(), pw = $('loginPw').value; if(!email||!pw) return toast('Enter email & password','err'); const { error } = await supabase.auth.signInWithPassword({email, password:pw}); if(error) toast(error.message,'err'); else toast('Welcome back!','ok'); }
-  async function handleSignup() {
-    const username = $('signupUser').value.trim().toLowerCase();
-    const email = $('signupEmail').value.trim();
-    const pw = $('signupPw').value;
-    if(!username || !email || !pw) return toast('Fill all fields','err');
-    if(username.length<3) return toast('Username min 3 chars','err');
-    if(pw.length<6) return toast('Password min 6 chars','err');
-    const { data: exist } = await supabase.from('profiles').select('id').eq('username', username).maybeSingle();
-    if(exist) return toast('Username taken','err');
-    const { data, error } = await supabase.auth.signUp({ email, password: pw });
-    if(error) return toast(error.message,'err');
-    if(data.user) await supabase.from('profiles').insert({ id: data.user.id, username, display_name: username });
-    toast('Account created! Log in now','ok');
-    switchAuthTab('login');
-  }
-  async function logoutUser() { await supabase.auth.signOut(); }
-
-  // UI state & navigation
-  function showPage(pageId) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); $(`page-${pageId}`).classList.add('active'); }
-  function showAuth(tab) { showPage('auth'); switchAuthTab(tab); }
-  function goHome() { if(currentUser) showPage('dash'); else showPage('landing'); location.hash = ''; }
-  function switchAuthTab(tab) { const isLogin = tab === 'login'; $('loginPanel').style.display = isLogin ? 'block' : 'none'; $('signupPanel').style.display = isLogin ? 'none' : 'block'; $('tabLoginBtn').classList.toggle('active', isLogin); $('tabSignupBtn').classList.toggle('active', !isLogin); $('authH').innerText = isLogin ? 'Welcome back' : 'Create account'; $('authSub').innerText = isLogin ? 'Sign in to your vault' : 'Start storing files'; }
-  function showDashboardSection(section) { $('section-home').style.display = section === 'home' ? 'block' : 'none'; $('section-files').style.display = section === 'files' ? 'block' : 'none'; $('sbHomeBtn').classList.toggle('active', section === 'home'); $('sbFilesBtn').classList.toggle('active', section === 'files'); if(section === 'files') refreshDashboard(); }
-  function openModal(id) { $(id).classList.add('open'); }
-  function closeModal(id) { $(id).classList.remove('open'); }
-  function renderNavBar() { const nav = $('navRegion'); if(currentUser && currentProfile) nav.innerHTML = `<span class="nav-user">🐱 @${escapeHtml(currentProfile.username)}</span><button class="btn btn-ghost btn-sm" onclick="logoutUser()">Logout</button>`; else nav.innerHTML = `<button class="btn btn-ghost btn-sm" onclick="showAuth('login')">Log in</button><button class="btn btn-primary btn-sm" onclick="showAuth('signup')">Sign up</button>`; }
-
-  // supabase auth listener
-  supabase.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session) { currentUser = session.user; await loadUserProfile(); renderNavBar(); showPage('dash'); refreshDashboard(); }
-    else if (event === 'SIGNED_OUT') { currentUser = null; currentProfile = null; renderNavBar(); showPage('landing'); }
-  });
-  async function initApp() { const { data: { session } } = await supabase.auth.getSession(); if(session) { currentUser = session.user; await loadUserProfile(); renderNavBar(); showPage('dash'); refreshDashboard(); } else { showPage('landing'); } const hash = location.hash; if(hash.startsWith('#/f/')) { const id = hash.slice(4); const { data: file } = await supabase.from('files').select('*').eq('id', id).eq('visibility','public').single(); if(file) viewFileDetails(file.id); else toast('Private or missing file','err'); } }
-  window.addEventListener('hashchange', () => { const h = location.hash; if(h.startsWith('#/f/')) { const id = h.slice(4); supabase.from('files').select('*').eq('id', id).eq('visibility','public').single().then(({data}) => { if(data) viewFileDetails(data.id); else toast('Not found','err'); }); } });
-  window.initApp = initApp; initApp();
-  // expose global
-  window.viewFileDetails = viewFileDetails; window.deleteFileById = deleteFileById; window.copyFileLink = copyFileLink; window.copyToClipboard = copyToClipboard; window.openUploadModal = openUploadModal; window.performUpload = performUpload; window.handleLogin = handleLogin; window.handleSignup = handleSignup; window.logoutUser = logoutUser; window.showAuth = showAuth; window.goHome = goHome; window.switchAuthTab = switchAuthTab; window.showDashboardSection = showDashboardSection; window.closeModal = closeModal; window.openModal = openModal; window.handleDragOver = handleDragOver; window.handleDragLeave = handleDragLeave; window.handleDrop = handleDrop; window.handleFileSelect = handleFileSelect;
+  };
+  
+  // Navigation functions
+  const showPage = (pageId) => {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    $(`page-${pageId}`).classList.add('active');
+  };
+  
+  const showAuth = (tab) => {
+    showPage('auth');
+    switchAuthTab(tab);
+  };
+  
+  const goHome = () => {
+    if (currentUser) {
+      showPage('dash');
+    } else {
+      showPage('landing');
+      location.hash = '';
+    }
+  };
+  
+  const switchAuthTab = (tab) => {
+    const isLogin = tab === 'login';
+    $('loginPanel').style.display = isLogin ? 'block' : 'none';
+    $('signupPanel').style.display = isLogin ? 'none' : 'block';
+    $('tabLoginBtn').classList.toggle('active', isLogin);
+    $('tabSignupBtn').classList.toggle('active', !isLogin);
+    $('authH').innerText = isLogin ? 'Welcome back' : 'Create account';
+    $('authSub').innerText = isLogin ? 'Sign in to your vault' : 'Start storing files today';
+  };
+  
+  const showDashboardSection = (section) => {
+    $('section-home').style.display = section === 'home' ? 'block' : 'none';
+    $('section-files').style.display = section === 'files' ? 'block' : 'none';
+    $('sbHomeBtn').classList.toggle('active', section === 'home');
+    $('sbFilesBtn').classList.toggle('active', section === 'files');
+    if (section === 'files') refreshDashboard();
+  };
+  
+  const openModal = (id) => {
+    $(id).classList.add('open');
+  };
+  
+  const closeModal = (id) => {
+    $(id).classList.remove('open');
+  };
+  
+  const renderNavBar = () => {
+    const nav = $('navRegion');
+    if (currentUser) {
+      nav.innerHTML = `<span class="nav-user">🐱 @${escapeHtml(currentUser.username)}</span><button class="btn btn-ghost btn-sm" onclick="logoutUser()">Logout</button>`;
+    } else {
+      nav.innerHTML = `<button class="btn btn-ghost btn-sm" onclick="showAuth('login')">Log in</button><button class="btn btn-primary btn-sm" onclick="showAuth('signup')">Sign up</button>`;
+    }
+  };
+  
+  const checkAutoLogin = () => {
+    const sessions = JSON.parse(localStorage.getItem('kittybin_sessions'));
+    const userIds = Object.keys(sessions);
+    if (userIds.length > 0) {
+      const users = JSON.parse(localStorage.getItem('kittybin_users'));
+      const lastUser = users.find(u => u.id === userIds[0]);
+      if (lastUser) {
+        currentUser = lastUser;
+        renderNavBar();
+        showPage('dash');
+        refreshDashboard();
+        return true;
+      }
+    }
+    return false;
+  };
+  
+  const handleHashChange = () => {
+    const hash = location.hash;
+    if (hash.startsWith('#/f/')) {
+      const fileId = hash.slice(4);
+      const files = JSON.parse(localStorage.getItem('kittybin_files'));
+      const file = files.find(f => f.id === fileId && f.visibility === 'public');
+      if (file) {
+        if (!currentUser) {
+          toast('Log in to view your files', 'err');
+        } else {
+          viewFileDetails(fileId);
+        }
+      } else {
+        toast('File not found or is private', 'err');
+      }
+    }
+  };
+  
+  // Initialize
+  const init = () => {
+    const autoLogged = checkAutoLogin();
+    if (!autoLogged) {
+      showPage('landing');
+    }
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange();
+  };
+  
+  init();
+  
+  // Expose globals
+  window.handleLogin = handleLogin;
+  window.handleSignup = handleSignup;
+  window.logoutUser = logoutUser;
+  window.showAuth = showAuth;
+  window.goHome = goHome;
+  window.switchAuthTab = switchAuthTab;
+  window.showDashboardSection = showDashboardSection;
+  window.openUploadModal = openUploadModal;
+  window.closeModal = closeModal;
+  window.handleDragOver = handleDragOver;
+  window.handleDragLeave = handleDragLeave;
+  window.handleDrop = handleDrop;
+  window.handleFileSelect = handleFileSelect;
+  window.performUpload = performUpload;
+  window.viewFileDetails = viewFileDetails;
+  window.deleteFileById = deleteFileById;
+  window.copyFileLink = copyFileLink;
+  window.copyToClipboard = copyToClipboard;
 </script>
 </body>
 </html>
